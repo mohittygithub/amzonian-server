@@ -1,4 +1,9 @@
 const express = require("express");
+const app = express();
+
+const dontenv = require("dotenv");
+dontenv.config();
+
 const mongoose = require("mongoose");
 const cors = require("cors");
 
@@ -6,13 +11,11 @@ const userRouter = require("./routers/userRouter.js");
 const productRouter = require("./routers/productRouter.js");
 const orderRouter = require("./routers/orderRouter.js");
 
-const dontenv = require("dotenv");
-dontenv.config();
-const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
+// DB Connections
 mongoose
   .connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
@@ -21,6 +24,8 @@ mongoose
   })
   .then(() => console.log("connected to database"))
   .catch((err) => console.log(err.message));
+
+//routes
 
 app.get("/", (req, res) => {
   res.send("hi");
@@ -39,6 +44,8 @@ app.get("/api/config/paypal", (req, res) => {
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });
+
+// server config
 
 const PORT = process.env.PORT || 5000;
 
