@@ -22,6 +22,10 @@ mongoose
   .then(() => console.log("connected to database"))
   .catch((err) => console.log(err.message));
 
+app.get("/", (req, res) => {
+  res.send("hi");
+});
+
 app.use("/api/users", userRouter);
 
 app.use("/api/products", productRouter);
